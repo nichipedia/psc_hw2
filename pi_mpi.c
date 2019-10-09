@@ -15,15 +15,18 @@ int main(int argc, char** argv) {
     double step = 1.0/(double) num_steps;
     int i;
     int slice = num_steps/world_size;
+    double t1 = MPI_Wtime();
     for (i = slice*rank; i < (slice*rank)+(slice-1); i++) {
         x = (i+0.5)*step;
         sum = sum + 4.0/(1.0+x*x);
     }
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Reduce(&sum, &sumTotal, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    double t2 = MPI_Wtime();
+    double speed = t2-t1;
     if (rank == 0) {
         double pi = step*sumTotal;
-        printf("PI Approx: %f\n", pi);
+        printf("%f,%f,%d\n", pi, speed, world_size);
     }
     MPI_Finalize();
 }
