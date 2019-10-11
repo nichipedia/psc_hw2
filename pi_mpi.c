@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Barrier(MPI_COMM_WORLD);
     double x = 0;
-    int num_steps = 10000000;
+    int num_steps = 100000;
     double sum = 0.0;
     double sumTotal;
     double step = 1.0/(double) num_steps;
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     double speed = t2-t1;
     if (rank == 0) {
         double pi = step*sumTotal;
-        printf("%f,%f,%d\n", pi, speed, world_size);
+        printf("%f,%f,%d\n", pi, speed, world_size); //Print format for csv
     }
     MPI_Finalize();
 }
